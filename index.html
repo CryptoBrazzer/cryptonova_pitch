@@ -4,41 +4,65 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CRYPTO NOVΛ — Инвестиционный раунд</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #0a0015;
-  --bg-dark: #05000c;
-  --glass: rgba(20, 10, 60, 0.35);
-  --glass-border: rgba(120, 80, 255, 0.25);
-  --accent: #7b5eff;
-  --accent-glow: rgba(123, 94, 255, 0.45);
+  --neon-blue: #00f0ff;
+  --neon-purple: #b08fff;
+  --neon-green: #00ff9d;
+  --glass: rgba(30, 20, 80, 0.22);
+  --glass-border: rgba(0, 240, 255, 0.35);
+  --glow: rgba(0, 240, 255, 0.6);
   --text: #f0f0ff;
-  --text-soft: rgba(240, 240, 255, 0.75);
-  --success: #00ff9d;
+  --text-soft: rgba(240, 240, 255, 0.85);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family:'Inter',sans-serif;
-  background: var(--bg-dark);
+  background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  background: radial-gradient(ellipse at top, #0f0025 0%, #000000 70%);
+  background: radial-gradient(circle at 30% 20%, #0f0025 0%, #000000 70%);
 }
 
 .parallax-bg {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(123,94,255,0.08) 0%, transparent 60%),
-              radial-gradient(circle at 70% 80%, rgba(0,255,157,0.05) 0%, transparent 70%);
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(0,240,255,0.18) 0%, transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(176,143,255,0.15) 0%, transparent 70%);
   z-index: -2;
   pointer-events: none;
+  animation: neon-pulse 12s infinite alternate ease-in-out;
+}
+
+@keyframes neon-pulse {
+  0% { opacity: 0.4; transform: scale(1); filter: blur(10px); }
+  100% { opacity: 0.75; transform: scale(1.12); filter: blur(30px); }
+}
+
+.neon-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--neon-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--neon-blue);
+  animation: particle-float 15s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes particle-float {
+  0% { transform: translate(0, 0); opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)); opacity: 0.3; }
 }
 
 section {
   min-height: 100vh;
-  padding: 60px 8% 80px;
+  padding: 40px 8% 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,91 +72,133 @@ section {
 }
 
 h1 {
-  font-size: clamp(3.8rem, 9vw, 6.8rem);
-  font-weight: 800;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(4.5rem, 12vw, 9rem);
+  font-weight: 900;
   margin-bottom: 1rem;
-  background: linear-gradient(90deg, #fff, var(--accent), #b08fff);
+  background: linear-gradient(90deg, #fff, var(--neon-blue), var(--neon-purple), var(--neon-green));
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 8s ease infinite;
+  text-shadow: 0 0 80px var(--glow);
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.8rem, 7vw, 4.8rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 40px rgba(123,94,255,0.6);
 }
 
-h2 {
-  font-size: clamp(2.4rem, 6vw, 3.8rem);
-  font-weight: 700;
-  margin-bottom: 1.8rem;
-  color: var(--accent);
-}
-
 .glass {
   background: var(--glass);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
   border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  padding: 40px;
+  border-radius: 32px;
+  padding: 48px;
   box-shadow: 
-    0 20px 80px rgba(0,0,0,0.6),
-    inset 0 0 30px rgba(123,94,255,0.12),
-    0 0 60px rgba(123,94,255,0.18);
+    0 24px 80px rgba(0,0,0,0.7),
+    inset 0 0 40px rgba(0,240,255,0.15),
+    0 0 80px rgba(0,240,255,0.35);
   margin: 20px 0;
-  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent, rgba(0,240,255,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+
+.glass:hover::before {
+  opacity: 1;
 }
 
 .glass:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px) scale(1.02);
   box-shadow: 
-    0 30px 100px rgba(0,0,0,0.7),
-    inset 0 0 40px rgba(123,94,255,0.18),
-    0 0 100px rgba(123,94,255,0.3);
+    0 40px 120px rgba(0,0,0,0.8),
+    inset 0 0 60px rgba(0,240,255,0.25),
+    0 0 160px rgba(0,240,255,0.5);
 }
 
 ul {
   list-style: none;
-  font-size: 1.15rem;
-  line-height: 1.9;
+  font-size: 1.18rem;
+  line-height: 2.4;
   margin-left: 0;
 }
 
 ul li {
   position: relative;
-  padding-left: 28px;
-  margin-bottom: 12px;
+  padding-left: 36px;
+  margin-bottom: 16px;
+  color: var(--text-soft);
 }
 
 ul li::before {
   content: "→";
   position: absolute;
   left: 0;
-  color: var(--accent);
+  color: var(--neon-green);
   font-weight: bold;
+  font-size: 1.4rem;
+  text-shadow: 0 0 15px var(--neon-green);
 }
 
 .fade {
   opacity: 0;
-  transform: translateY(60px);
-  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(80px) scale(0.95);
+  transition: all 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fade.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+}
+
+.important-number {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--neon-green);
+  text-shadow: 0 0 20px rgba(0,255,157,0.7);
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: rgba(0,255,157,0.08);
+  display: inline-block;
 }
 
 footer {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px 40px;
   opacity: 0.6;
   font-size: 15px;
-  border-top: 1px solid rgba(123,94,255,0.15);
+  border-top: 1px solid rgba(0,240,255,0.2);
 }
 
 @media (max-width: 768px) {
-  section { padding: 50px 6% 70px; }
-  h1 { font-size: 3.8rem; }
-  h2 { font-size: 2.6rem; }
+  section { padding: 40px 6% 60px; }
+  h1 { font-size: 4rem; }
+  h2 { font-size: 2.8rem; }
   .glass { padding: 32px; }
-  p { font-size: 16px; }
+  p, ul { font-size: 16px; line-height: 2; }
 }
 </style>
 </head>
@@ -141,12 +207,27 @@ footer {
 
 <div class="parallax-bg"></div>
 
+<!-- Добавляем несколько неоновых частиц -->
+<div class="neon-particle" style="--dx: 400px; --dy: 600px; top:20%; left:10%; animation-delay:0s;"></div>
+<div class="neon-particle" style="--dx: -500px; --dy: 800px; top:60%; right:15%; animation-delay:3s;"></div>
+<div class="neon-particle" style="--dx: 300px; --dy: -400px; bottom:30%; left:70%; animation-delay:6s;"></div>
+
 <section class="fade">
   <h1>CRYPTO NOVΛ</h1>
   <p>Инвестиционный раунд · 10% за €18 000</p>
-  <p style="font-size:22px;color:#7aa2ff;margin-top:20px">
+  <p style="font-size:22px;color:#00f0ff;margin-top:20px;text-shadow:0 0 20px #00f0ff;">
     Полная экосистема для системной прибыли в крипте
   </p>
+</section>
+
+<section class="fade">
+  <h2>Размер рынка</h2>
+  <div class="glass">
+    <p>Глобальный рынок криптовалют превышает <span class="important-number">$3 трлн</span> капитализации.</p>
+    <p>Активных пользователей — более <span class="important-number">820 млн</span>.</p>
+    <p>Рынок подписочных финансовых сервисов растёт на <span class="important-number">18–22%</span> ежегодно.</p>
+    <p>Даже 0.01% от глобального рынка — это десятки тысяч пользователей.</p>
+  </div>
 </section>
 
 <section class="fade">
@@ -162,16 +243,6 @@ footer {
       <li>Низкое качество сигналов</li>
       <li>Отсутствие прозрачной аналитики</li>
     </ul>
-  </div>
-</section>
-
-<section class="fade">
-  <h2>Размер рынка</h2>
-  <div class="glass">
-    <p>Глобальный рынок криптовалют превышает $3 трлн капитализации.</p>
-    <p>Активных пользователей — более 820 млн.</p>
-    <p>Рынок подписочных финансовых сервисов растёт на 18–22% ежегодно.</p>
-    <p>Даже 0.01% от глобального рынка — это десятки тысяч пользователей.</p>
   </div>
 </section>
 
@@ -210,7 +281,7 @@ footer {
   <h2>Бизнес-модель</h2>
   <div class="glass">
     <p>Free + Pro + VIP</p>
-    <p>Средний чек: €29 / месяц</p>
+    <p>Средний чек: <span class="important-number">€29 / месяц</span></p>
     <p>Основной доход — подписочная модель</p>
     <p>Дополнительные доходы: консультации, партнёрства, B2B-интеграции</p>
   </div>
@@ -221,7 +292,7 @@ footer {
   <div class="glass">
     <p>Учёт комиссии Apple 30%</p>
     <p>Учёт корпоративного налога ОАЭ 9%</p>
-    <p>Фиксированные расходы: €800 / месяц (AI агрегаторы)</p>
+    <p>Фиксированные расходы: <span class="important-number">€800 / месяц</span> (AI агрегаторы)</p>
     <p>Переменные расходы: трафик (CAC)</p>
   </div>
 </section>
@@ -232,43 +303,43 @@ footer {
     <p>Точка безубыточности: ~40–50 платных пользователей</p>
     <div class="highlight-block">
       <p><strong>Сценарий 1 — 1 000 платных пользователей</strong></p>
-      <p>Валовая выручка:<br>€29 × 1000 = €29 000</p>
-      <p>После Apple:<br>€29 000 × 0.7 = €20 300</p>
-      <p>Расходы:<br>€800 + €3 000 = €3 800</p>
-      <p>Прибыль до налога:<br>€20 300 – €3 800 = €16 500</p>
-      <p>Налог 9%:<br>€1 485</p>
-      <p>Чистая прибыль:<br>≈ €15 015 / месяц</p>
-      <p>Годовая чистая прибыль:<br>≈ €180 000</p>
-      <p>10% инвестора:<br>≈ €18 000 в год</p>
+      <p>Валовая выручка:<br><span class="important-number">€29 000</span></p>
+      <p>После Apple:<br><span class="important-number">€20 300</span></p>
+      <p>Расходы:<br><span class="important-number">€3 800</span></p>
+      <p>Прибыль до налога:<br><span class="important-number">€16 500</span></p>
+      <p>Налог 9%:<br><span class="important-number">€1 485</span></p>
+      <p>Чистая прибыль:<br><span class="important-number">€15 015 / месяц</span></p>
+      <p>Годовая чистая прибыль:<br><span class="important-number">€180 000</span></p>
+      <p>10% инвестора:<br><span class="important-number">€18 000 в год</span></p>
       <p><strong>Инвестор окупается примерно за 12 месяцев.</strong></p>
 
-      <hr style="border-color:rgba(255,255,255,0.15);margin:20px 0;">
+      <hr style="border-color:rgba(0,240,255,0.2);margin:20px 0;">
 
       <p><strong>Сценарий 2 — 5 000 пользователей</strong></p>
-      <p>Валовая выручка: €145 000</p>
-      <p>После Apple: €101 500</p>
-      <p>Расходы: €800 + €12 000 = €12 800</p>
-      <p>Прибыль до налога: €88 700</p>
-      <p>Налог 9%: €7 983</p>
-      <p>Чистая прибыль: ≈ €80 717 / месяц</p>
-      <p>Годовая чистая прибыль: ≈ €968 000</p>
-      <p>10% инвестора: ≈ €96 800 в год</p>
+      <p>Валовая выручка: <span class="important-number">€145 000</span></p>
+      <p>После Apple: <span class="important-number">€101 500</span></p>
+      <p>Расходы: <span class="important-number">€12 800</span></p>
+      <p>Прибыль до налога: <span class="important-number">€88 700</span></p>
+      <p>Налог 9%: <span class="important-number">€7 983</span></p>
+      <p>Чистая прибыль: <span class="important-number">€80 717 / месяц</span></p>
+      <p>Годовая чистая прибыль: <span class="important-number">€968 000</span></p>
+      <p>10% инвестора: <span class="important-number">€96 800 в год</span></p>
 
-      <hr style="border-color:rgba(255,255,255,0.15);margin:20px 0;">
+      <hr style="border-color:rgba(0,240,255,0.2);margin:20px 0;">
 
       <p><strong>Сценарий 3 — 10 000 пользователей</strong></p>
-      <p>Валовая выручка: €290 000</p>
-      <p>После Apple: €203 000</p>
-      <p>Расходы: €800 + €25 000 = €25 800</p>
-      <p>Прибыль до налога: €177 200</p>
-      <p>Налог 9%: €15 948</p>
-      <p>Чистая прибыль: ≈ €161 252 / месяц</p>
-      <p>Годовая чистая прибыль: ≈ €1.93 млн</p>
-      <p>10% инвестора: ≈ €193 000 в год</p>
+      <p>Валовая выручка: <span class="important-number">€290 000</span></p>
+      <p>После Apple: <span class="important-number">€203 000</span></p>
+      <p>Расходы: <span class="important-number">€25 800</span></p>
+      <p>Прибыль до налога: <span class="important-number">€177 200</span></p>
+      <p>Налог 9%: <span class="important-number">€15 948</span></p>
+      <p>Чистая прибыль: <span class="important-number">€161 252 / месяц</span></p>
+      <p>Годовая чистая прибыль: <span class="important-number">€1.93 млн</span></p>
+      <p>10% инвестора: <span class="important-number">€193 000 в год</span></p>
 
-      <hr style="border-color:rgba(255,255,255,0.15);margin:20px 0;">
+      <hr style="border-color:rgba(0,240,255,0.2);margin:20px 0;">
 
-      <p><strong>Теперь важная интеллектуальная честность.</strong></p>
+      <p><strong>Важная интеллектуальная честность.</strong></p>
       <p>Эта модель предполагает:</p>
       <ul style="margin-left:20px;">
         <li>стабильный retention</li>
@@ -288,7 +359,7 @@ footer {
     <p>– СНГ и Европа (2026): фокус на русскоязычную аудиторию и ЕС, ожидаемый рост на 200–300%</p>
     <p>– Латинская Америка (2027): Бразилия, Мексика, Аргентина — рынки с высоким интересом к крипте, потенциал +500k пользователей</p>
     <p>– Азия (2028): Индия, Индонезия, Вьетнам — интеграция локальных платежей, прогноз роста до 2 млн пользователей</p>
-    <p>– Глобальный: локализация на 35+ языков, партнёрства с биржами</p>
+    <p>– Глобальный: локализация на 5+ языков, партнёрства с биржами</p>
   </div>
 </section>
 
@@ -300,7 +371,9 @@ footer {
     <p>Регистрация компании — €3 250</p>
     <p>Маркетинг и автоматизация — €5 400</p>
     <p>Оборудование — €3 500</p>
-    <p style="margin-top:20px;font-weight:700;font-size:1.4rem;color:#7aa2ff;">Итого: €18 000</p>
+    <p style="margin-top:20px;font-weight:700;font-size:1.6rem;color:#00ff9d;text-shadow:0 0 20px #00ff9d;">
+      Итого: €18 000
+    </p>
   </div>
 </section>
 
@@ -311,6 +384,22 @@ footer {
     <p>– Интеграция в крупную финтех-экосистему</p>
     <p>– Выкуп доли фаундером или инвестором</p>
     <p>– Дивидендная модель</p>
+  </div>
+</section>
+
+<section class="fade">
+  <h2>Итог</h2>
+  <div class="glass">
+    <p><strong>CRYPTO NOVΛ</strong> — готовая платформа для системной прибыли в крипте с минимальными рисками и высоким upside.</p>
+    <p>Ключевые преимущества:</p>
+    <ul style="margin-left:20px;line-height:2;">
+      <li>Готовый продукт и база 80 000+ пользователей</li>
+      <li>Маржинальность >80%, окупаемость инвестиций за 12 месяцев при 1 000 подписчиках</li>
+      <li>Потенциал роста: от <span class="important-number">€180 000</span> чистой прибыли в год на старте до <span class="important-number">€1.93 млн</span> при 10 000 пользователей</li>
+      <li>Глобальная экспансия: СНГ, Европа, Латинская Америка, Азия</li>
+      <li>Инвестиции <span class="important-number">€18 000</span> за 10% доли с ROI 20–50×</li>
+    </ul>
+    <p>Возникли вопросы? Напишите нам: cryptonova.app@gmail.com</p>
   </div>
 </section>
 
