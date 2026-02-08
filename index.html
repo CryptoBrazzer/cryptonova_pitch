@@ -1,985 +1,1110 @@
 <!DOCTYPE html>
 <html lang="ru" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRYPTO NOVΛ — Pitch Deck</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        accent: {
-                            blue: '#64b5ff',
-                            cyan: '#00f0ff',
-                            purple: '#a855f7',
-                        },
-                        dark: {
-                            bg: '#050508',
-                            card: 'rgba(255, 255, 255, 0.03)',
-                        }
-                    },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-                        'space': 'linear-gradient(to bottom, #050508 0%, #0a0a12 50%, #050508 100%)',
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        glow: {
-                            '0%': { boxShadow: '0 0 20px rgba(100, 181, 255, 0.3)' },
-                            '100%': { boxShadow: '0 0 40px rgba(100, 181, 255, 0.6)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-        }
-        
-        body {
-            background: #050508;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-        }
-        
-        section {
-            scroll-snap-align: start;
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 2rem;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
-                        inset 0 0 20px rgba(100, 181, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.5),
-                        0 0 40px rgba(100, 181, 255, 0.2),
-                        inset 0 0 30px rgba(100, 181, 255, 0.1);
-            border-color: rgba(100, 181, 255, 0.3);
-        }
-        
-        .neon-text {
-            background: linear-gradient(135deg, #64b5ff 0%, #00f0ff 50%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(100, 181, 255, 0.5);
-        }
-        
-        .neon-glow {
-            text-shadow: 0 0 20px rgba(100, 181, 255, 0.8),
-                         0 0 40px rgba(0, 240, 255, 0.4);
-        }
-        
-        .gradient-border {
-            position: relative;
-            background: linear-gradient(135deg, rgba(100, 181, 255, 0.1), rgba(0, 240, 255, 0.05));
-        }
-        
-        .gradient-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(100, 181, 255, 0.5), rgba(0, 240, 255, 0.3), rgba(168, 85, 247, 0.5));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-        }
-        
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle var(--duration) ease-in-out infinite;
-            animation-delay: var(--delay);
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: var(--opacity); transform: scale(1); }
-        }
-        
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #64b5ff, #00f0ff, #a855f7);
-            z-index: 1000;
-            transition: width 0.1s ease-out;
-            box-shadow: 0 0 10px rgba(100, 181, 255, 0.8);
-        }
-        
-        .nav-dots {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .nav-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 181, 255, 0.3);
-        }
-        
-        .nav-dot.active {
-            background: #64b5ff;
-            box-shadow: 0 0 15px rgba(100, 181, 255, 0.8);
-            transform: scale(1.3);
-        }
-        
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .number-accent {
-            font-size: 1.2em;
-            font-weight: 800;
-            color: #00f0ff;
-            text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-        }
-        
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at center, rgba(100, 181, 255, 0.15) 0%, transparent 70%),
-                        radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
-                        radial-gradient(ellipse at bottom left, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .grid-pattern {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(100, 181, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(100, 181, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-        }
-        
-        @media (max-width: 768px) {
-            section {
-                padding: 1.5rem;
-                min-height: 100dvh;
-            }
-            .nav-dots {
-                right: 1rem;
-                gap: 0.75rem;
-            }
-            .nav-dot {
-                width: 8px;
-                height: 8px;
-            }
-        }
-        
-        .scenario-card {
-            background: linear-gradient(135deg, rgba(100, 181, 255, 0.05), rgba(0, 240, 255, 0.02));
-            border-left: 3px solid #64b5ff;
-        }
-        
-        .highlight-box {
-            background: linear-gradient(135deg, rgba(100, 181, 255, 0.1), rgba(0, 240, 255, 0.05));
-            border: 1px solid rgba(100, 181, 255, 0.3);
-        }
-        
-        .total-investment {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            background: linear-gradient(135deg, #64b5ff, #00f0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 40px rgba(100, 181, 255, 0.5);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>CRYPTO NOVΛ — Pitch Deck</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+   <script>
+       tailwind.config = {
+           theme: {
+               extend: {
+                   fontFamily: {
+                       sans: ['Inter', 'sans-serif'],
+                   },
+                   colors: {
+                       accent: {
+                           blue: '#64b5ff',
+                           cyan: '#00f0ff',
+                           purple: '#a855f7',
+                       },
+                       dark: {
+                           bg: '#050508',
+                           card: 'rgba(255, 255, 255, 0.03)',
+                       }
+                   },
+                   backgroundImage: {
+                       'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                       'space': 'linear-gradient(to bottom, #050508 0%, #0a0a12 50%, #050508 100%)',
+                   },
+                   animation: {
+                       'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                       'float': 'float 6s ease-in-out infinite',
+                       'glow': 'glow 2s ease-in-out infinite alternate',
+                   },
+                   keyframes: {
+                       float: {
+                           '0%, 100%': { transform: 'translateY(0)' },
+                           '50%': { transform: 'translateY(-20px)' },
+                       },
+                       glow: {
+                           '0%': { boxShadow: '0 0 20px rgba(100, 181, 255, 0.3)' },
+                           '100%': { boxShadow: '0 0 40px rgba(100, 181, 255, 0.6)' },
+                       }
+                   }
+               }
+           }
+       }
+   </script>
+   <style>
+       * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+       
+       html {
+           scroll-snap-type: y mandatory;
+           overflow-y: scroll;
+       }
+       
+       body {
+           background: #050508;
+           color: #ffffff;
+           font-family: 'Inter', sans-serif;
+           overflow-x: hidden;
+       }
+       
+       section {
+           scroll-snap-align: start;
+           min-height: 100vh;
+           width: 100%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           position: relative;
+           padding: 2rem;
+       }
+       
+       .glass-card {
+           background: rgba(255, 255, 255, 0.03);
+           backdrop-filter: blur(20px);
+           -webkit-backdrop-filter: blur(20px);
+           border: 1px solid rgba(255, 255, 255, 0.08);
+           box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                       inset 0 0 20px rgba(100, 181, 255, 0.05);
+           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+       }
+       
+       .glass-card:hover {
+           transform: translateY(-8px);
+           box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.5),
+                       0 0 40px rgba(100, 181, 255, 0.2),
+                       inset 0 0 30px rgba(100, 181, 255, 0.1);
+           border-color: rgba(100, 181, 255, 0.3);
+       }
+       
+       .neon-text {
+           background: linear-gradient(135deg, #64b5ff 0%, #00f0ff 50%, #a855f7 100%);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           background-clip: text;
+           text-shadow: 0 0 30px rgba(100, 181, 255, 0.5);
+       }
+       
+       .neon-glow {
+           text-shadow: 0 0 20px rgba(100, 181, 255, 0.8),
+                        0 0 40px rgba(0, 240, 255, 0.4);
+       }
+       
+       .gradient-border {
+           position: relative;
+           background: linear-gradient(135deg, rgba(100, 181, 255, 0.1), rgba(0, 240, 255, 0.05));
+       }
+       
+       .gradient-border::before {
+           content: '';
+           position: absolute;
+           inset: 0;
+           border-radius: inherit;
+           padding: 1px;
+           background: linear-gradient(135deg, rgba(100, 181, 255, 0.5), rgba(0, 240, 255, 0.3), rgba(168, 85, 247, 0.5));
+           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+           -webkit-mask-composite: xor;
+           mask-composite: exclude;
+       }
+       
+       .stars {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           height: 100%;
+           pointer-events: none;
+           z-index: 0;
+       }
+       
+       .star {
+           position: absolute;
+           width: 2px;
+           height: 2px;
+           background: white;
+           border-radius: 50%;
+           opacity: 0;
+           animation: twinkle var(--duration) ease-in-out infinite;
+           animation-delay: var(--delay);
+       }
+       
+       @keyframes twinkle {
+           0%, 100% { opacity: 0; transform: scale(0.5); }
+           50% { opacity: var(--opacity); transform: scale(1); }
+       }
+       
+       .progress-bar {
+           position: fixed;
+           top: 0;
+           left: 0;
+           height: 3px;
+           background: linear-gradient(90deg, #64b5ff, #00f0ff, #a855f7);
+           z-index: 1000;
+           transition: width 0.1s ease-out;
+           box-shadow: 0 0 10px rgba(100, 181, 255, 0.8);
+       }
+       
+       .nav-dots {
+           position: fixed;
+           right: 2rem;
+           top: 50%;
+           transform: translateY(-50%);
+           z-index: 100;
+           display: flex;
+           flex-direction: column;
+           gap: 1rem;
+       }
+       
+       .nav-dot {
+           width: 10px;
+           height: 10px;
+           border-radius: 50%;
+           background: rgba(255, 255, 255, 0.2);
+           cursor: pointer;
+           transition: all 0.3s ease;
+           border: 1px solid rgba(100, 181, 255, 0.3);
+       }
+       
+       .nav-dot.active {
+           background: #64b5ff;
+           box-shadow: 0 0 15px rgba(100, 181, 255, 0.8);
+           transform: scale(1.3);
+       }
+       
+       .fade-in {
+           opacity: 0;
+           transform: translateY(30px);
+           transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+       }
+       
+       .fade-in.visible {
+           opacity: 1;
+           transform: translateY(0);
+       }
+       
+       .number-accent {
+           font-size: 1.2em;
+           font-weight: 800;
+           color: #00f0ff;
+           text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+       }
+       
+       .hero-bg {
+           position: absolute;
+           inset: 0;
+           background: radial-gradient(ellipse at center, rgba(100, 181, 255, 0.15) 0%, transparent 70%),
+                       radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                       radial-gradient(ellipse at bottom left, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
+           pointer-events: none;
+       }
+       
+       .grid-pattern {
+           position: absolute;
+           inset: 0;
+           background-image: 
+               linear-gradient(rgba(100, 181, 255, 0.03) 1px, transparent 1px),
+               linear-gradient(90deg, rgba(100, 181, 255, 0.03) 1px, transparent 1px);
+           background-size: 50px 50px;
+           pointer-events: none;
+       }
+       
+       @media (max-width: 768px) {
+           section {
+               padding: 1.5rem;
+               min-height: 100dvh;
+           }
+           .nav-dots {
+               right: 1rem;
+               gap: 0.75rem;
+           }
+           .nav-dot {
+               width: 8px;
+               height: 8px;
+           }
+       }
+       
+       .scenario-card {
+           background: linear-gradient(135deg, rgba(100, 181, 255, 0.05), rgba(0, 240, 255, 0.02));
+           border-left: 3px solid #64b5ff;
+       }
+       
+       .highlight-box {
+           background: linear-gradient(135deg, rgba(100, 181, 255, 0.1), rgba(0, 240, 255, 0.05));
+           border: 1px solid rgba(100, 181, 255, 0.3);
+       }
+       
+       .total-investment {
+           font-size: clamp(2.5rem, 8vw, 5rem);
+           background: linear-gradient(135deg, #64b5ff, #00f0ff);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+           background-clip: text;
+           text-shadow: 0 0 40px rgba(100, 181, 255, 0.5);
+           font-weight: 900;
+           letter-spacing: -0.02em;
+       }
+
+       /* Icon Styles */
+       .icon-circle {
+           width: 48px;
+           height: 48px;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           position: relative;
+           overflow: hidden;
+       }
+       
+       .icon-circle::before {
+           content: '';
+           position: absolute;
+           inset: 0;
+           background: linear-gradient(135deg, rgba(100, 181, 255, 0.2), rgba(0, 240, 255, 0.1));
+           border-radius: 50%;
+       }
+       
+       .icon-circle svg {
+           width: 24px;
+           height: 24px;
+           stroke: currentColor;
+           fill: none;
+           stroke-width: 2;
+           stroke-linecap: round;
+           stroke-linejoin: round;
+           position: relative;
+           z-index: 1;
+       }
+
+       .icon-gradient-blue { color: #64b5ff; }
+       .icon-gradient-cyan { color: #00f0ff; }
+       .icon-gradient-purple { color: #a855f7; }
+       .icon-gradient-green { color: #4ade80; }
+       .icon-gradient-red { color: #f87171; }
+       .icon-gradient-yellow { color: #facc15; }
+
+       .check-icon {
+           width: 24px;
+           height: 24px;
+           border-radius: 50%;
+           background: linear-gradient(135deg, #4ade80, #22c55e);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           flex-shrink: 0;
+       }
+       
+       .check-icon svg {
+           width: 14px;
+           height: 14px;
+           stroke: #000;
+           stroke-width: 3;
+           fill: none;
+       }
+
+       .rocket-icon {
+           width: 24px;
+           height: 24px;
+           border-radius: 50%;
+           background: linear-gradient(135deg, #64b5ff, #00f0ff);
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           flex-shrink: 0;
+       }
+       
+       .rocket-icon svg {
+           width: 14px;
+           height: 14px;
+           fill: #000;
+       }
+   </style>
 </head>
 <body class="bg-dark-bg text-white antialiased selection:bg-accent-blue selection:text-black">
 
-    <!-- Progress Bar -->
-    <div class="progress-bar" id="progressBar"></div>
-    
-    <!-- Navigation Dots -->
-    <div class="nav-dots hidden md:flex" id="navDots"></div>
-    
-    <!-- Starfield Background -->
-    <div class="stars" id="starfield"></div>
+   <!-- Progress Bar -->
+   <div class="progress-bar" id="progressBar"></div>
+   
+   <!-- Navigation Dots -->
+   <div class="nav-dots hidden md:flex" id="navDots"></div>
+   
+   <!-- Starfield Background -->
+   <div class="stars" id="starfield"></div>
 
-    <!-- Section 1: Hero -->
-    <section id="section-1" class="relative overflow-hidden">
-        <div class="hero-bg"></div>
-        <div class="grid-pattern"></div>
-        
-        <div class="relative z-10 text-center max-w-6xl mx-auto px-4">
-            <div class="fade-in mb-6">
-                <span class="inline-block px-4 py-2 rounded-full glass-card text-accent-cyan text-sm font-medium tracking-wider uppercase mb-8 border border-accent-blue/30">
-                    Investment Opportunity 2026
-                </span>
-            </div>
-            
-            <h1 class="fade-in text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 leading-none" style="transition-delay: 100ms;">
-                <span class="neon-text">CRYPTO NOVΛ</span>
-            </h1>
-            
-            <div class="fade-in mb-8" style="transition-delay: 200ms;">
-                <p class="text-xl md:text-3xl font-light text-gray-300 tracking-wide">
-                    Инвестиционный раунд · <span class="number-accent">10%</span> за <span class="number-accent">€18 000</span>
-                </p>
-            </div>
-            
-            <div class="fade-in max-w-3xl mx-auto" style="transition-delay: 300ms;">
-                <p class="text-lg md:text-2xl text-gray-400 font-light leading-relaxed">
-                    Полная экосистема для системной прибыли в крипте
-                </p>
-            </div>
-            
-            <div class="fade-in mt-16 animate-float" style="transition-delay: 400ms;">
-                <div class="w-6 h-10 border-2 border-accent-blue/50 rounded-full mx-auto flex justify-center pt-2">
-                    <div class="w-1 h-3 bg-accent-cyan rounded-full animate-pulse"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 1: Hero -->
+   <section id="section-1" class="relative overflow-hidden">
+       <div class="hero-bg"></div>
+       <div class="grid-pattern"></div>
+       
+       <div class="relative z-10 text-center max-w-6xl mx-auto px-4">
+           <div class="fade-in mb-6">
+               <span class="inline-block px-4 py-2 rounded-full glass-card text-accent-cyan text-sm font-medium tracking-wider uppercase mb-8 border border-accent-blue/30">
+                   Investment Opportunity 2026
+               </span>
+           </div>
+           
+           <h1 class="fade-in text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter mb-6 leading-none" style="transition-delay: 100ms;">
+               <span class="neon-text">CRYPTO NOVΛ</span>
+           </h1>
+           
+           <div class="fade-in mb-8" style="transition-delay: 200ms;">
+               <p class="text-xl md:text-3xl font-light text-gray-300 tracking-wide">
+                   Инвестиционный раунд · <span class="number-accent">10%</span> за <span class="number-accent">€18 000</span>
+               </p>
+           </div>
+           
+           <div class="fade-in max-w-3xl mx-auto" style="transition-delay: 300ms;">
+               <p class="text-lg md:text-2xl text-gray-400 font-light leading-relaxed">
+                   Полная экосистема для системной прибыли в крипте
+               </p>
+           </div>
+           
+           <div class="fade-in mt-16 animate-float" style="transition-delay: 400ms;">
+               <div class="w-6 h-10 border-2 border-accent-blue/50 rounded-full mx-auto flex justify-center pt-2">
+                   <div class="w-1 h-3 bg-accent-cyan rounded-full animate-pulse"></div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 2: Market Size -->
-    <section id="section-2" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Размер рынка</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <div class="fade-in space-y-6" style="transition-delay: 200ms;">
-                    <div class="glass-card rounded-2xl p-8 gradient-border">
-                        <p class="text-lg md:text-xl leading-relaxed text-gray-300">
-                            Глобальный рынок криптовалют превышает <span class="number-accent">$3 трлн</span> капитализации.
-                            Активных пользователей — более <span class="number-accent">820 млн</span>.
-                        </p>
-                    </div>
-                    
-                    <div class="glass-card rounded-2xl p-8 gradient-border">
-                        <p class="text-lg md:text-xl leading-relaxed text-gray-300">
-                            Рынок подписочных финансовых сервисов растёт на <span class="number-accent">18–22%</span> ежегодно.
-                            Даже <span class="number-accent">0.01%</span> от глобального рынка — это десятки тысяч пользователей.
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="fade-in grid grid-cols-2 gap-4" style="transition-delay: 400ms;">
-                    <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform">
-                        <div class="text-4xl md:text-5xl font-black neon-text mb-2">$3T</div>
-                        <div class="text-sm text-gray-400 uppercase tracking-wider">Капитализация</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform">
-                        <div class="text-4xl md:text-5xl font-black neon-text mb-2">820M</div>
-                        <div class="text-sm text-gray-400 uppercase tracking-wider">Пользователей</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform col-span-2">
-                        <div class="text-4xl md:text-5xl font-black neon-text mb-2">18-22%</div>
-                        <div class="text-sm text-gray-400 uppercase tracking-wider">Годовой рост</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 2: Market Size -->
+   <section id="section-2" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Размер рынка</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-2 gap-8 items-center">
+               <div class="fade-in space-y-6" style="transition-delay: 200ms;">
+                   <div class="glass-card rounded-2xl p-8 gradient-border">
+                       <p class="text-lg md:text-xl leading-relaxed text-gray-300">
+                           Глобальный рынок криптовалют превышает <span class="number-accent">$3 трлн</span> капитализации.
+                           Активных пользователей — более <span class="number-accent">820 млн</span>.
+                       </p>
+                   </div>
+                   
+                   <div class="glass-card rounded-2xl p-8 gradient-border">
+                       <p class="text-lg md:text-xl leading-relaxed text-gray-300">
+                           Рынок подписочных финансовых сервисов растёт на <span class="number-accent">18–22%</span> ежегодно.
+                           Даже <span class="number-accent">0.01%</span> от глобального рынка — это десятки тысяч пользователей.
+                       </p>
+                   </div>
+               </div>
+               
+               <div class="fade-in grid grid-cols-2 gap-4" style="transition-delay: 400ms;">
+                   <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform">
+                       <div class="text-4xl md:text-5xl font-black neon-text mb-2">$3T</div>
+                       <div class="text-sm text-gray-400 uppercase tracking-wider">Капитализация</div>
+                   </div>
+                   <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform">
+                       <div class="text-4xl md:text-5xl font-black neon-text mb-2">820M</div>
+                       <div class="text-sm text-gray-400 uppercase tracking-wider">Пользователей</div>
+                   </div>
+                   <div class="glass-card rounded-2xl p-6 text-center hover:scale-105 transition-transform col-span-2">
+                       <div class="text-4xl md:text-5xl font-black neon-text mb-2">18-22%</div>
+                       <div class="text-sm text-gray-400 uppercase tracking-wider">Годовой рост</div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 3: Problem -->
-    <section id="section-3" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 text-red-400">Проблема рынка</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-red-400 to-orange-400 rounded-full"></div>
-            </div>
-            
-            <div class="fade-in glass-card rounded-3xl p-8 md:p-12 mb-8" style="transition-delay: 200ms;">
-                <p class="text-xl md:text-2xl leading-relaxed text-gray-300 mb-8">
-                    Крипторынок — один из самых быстрорастущих, но одновременно самых хаотичных. 
-                    Инвесторы теряют средства не из-за отсутствия потенциала, а из-за отсутствия системности.
-                </p>
-                
-                <h3 class="text-2xl font-bold mb-6 text-white">Основные боли аудитории:</h3>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
-                        <div class="text-red-400 text-2xl mb-2">01</div>
-                        <p class="text-gray-300">Перегрузка информацией</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
-                        <div class="text-red-400 text-2xl mb-2">02</div>
-                        <p class="text-gray-300">Отсутствие риск-менеджмента</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
-                        <div class="text-red-400 text-2xl mb-2">03</div>
-                        <p class="text-gray-300">Эмоциональная торговля</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
-                        <div class="text-red-400 text-2xl mb-2">04</div>
-                        <p class="text-gray-300">Низкое качество сигналов</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors md:col-span-2 lg:col-span-1">
-                        <div class="text-red-400 text-2xl mb-2">05</div>
-                        <p class="text-gray-300">Отсутствие прозрачной аналитики</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 3: Problem -->
+   <section id="section-3" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 text-red-400">Проблема рынка</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-red-400 to-orange-400 rounded-full"></div>
+           </div>
+           
+           <div class="fade-in glass-card rounded-3xl p-8 md:p-12 mb-8" style="transition-delay: 200ms;">
+               <p class="text-xl md:text-2xl leading-relaxed text-gray-300 mb-8">
+                   Крипторынок — один из самых быстрорастущих, но одновременно самых хаотичных. 
+                   Инвесторы теряют средства не из-за отсутствия потенциала, а из-за отсутствия системности.
+               </p>
+               
+               <h3 class="text-2xl font-bold mb-6 text-white">Основные боли аудитории:</h3>
+               
+               <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                   <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
+                       <div class="text-red-400 text-2xl font-black mb-2">01</div>
+                       <p class="text-gray-300">Перегрузка информацией</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
+                       <div class="text-red-400 text-2xl font-black mb-2">02</div>
+                       <p class="text-gray-300">Отсутствие риск-менеджмента</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
+                       <div class="text-red-400 text-2xl font-black mb-2">03</div>
+                       <p class="text-gray-300">Эмоциональная торговля</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors">
+                       <div class="text-red-400 text-2xl font-black mb-2">04</div>
+                       <p class="text-gray-300">Низкое качество сигналов</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 border-l-4 border-red-400 hover:border-accent-cyan transition-colors md:col-span-2 lg:col-span-1">
+                       <div class="text-red-400 text-2xl font-black mb-2">05</div>
+                       <p class="text-gray-300">Отсутствие прозрачной аналитики</p>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 4: Solution -->
-    <section id="section-4" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-5xl mx-auto w-full text-center">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Наше решение</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
-            </div>
-            
-            <div class="fade-in glass-card rounded-3xl p-8 md:p-16 gradient-border" style="transition-delay: 200ms;">
-                <p class="text-xl md:text-3xl leading-relaxed font-light">
-                    <span class="font-bold neon-text">CRYPTO NOVΛ</span> объединяет аналитику, инсайты, торговые сигналы, автоторговлю, образовательный контент и персональное сопровождение в одном мобильном приложении.
-                </p>
-                <div class="mt-8 inline-block px-6 py-3 rounded-full bg-accent-blue/10 border border-accent-blue/30">
-                    <span class="text-accent-cyan font-semibold tracking-wider uppercase text-sm">Платформа закрывает все потребности заинтересованного клиента</span>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 4: Solution -->
+   <section id="section-4" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-5xl mx-auto w-full text-center">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Наше решение</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
+           </div>
+           
+           <div class="fade-in glass-card rounded-3xl p-8 md:p-16 gradient-border" style="transition-delay: 200ms;">
+               <p class="text-xl md:text-3xl leading-relaxed font-light">
+                   <span class="font-bold neon-text">CRYPTO NOVΛ</span> объединяет аналитику, инсайты, торговые сигналы, автоторговлю, образовательный контент и персональное сопровождение в одном мобильном приложении.
+               </p>
+               <div class="mt-8 inline-block px-6 py-3 rounded-full bg-accent-blue/10 border border-accent-blue/30">
+                   <span class="text-accent-cyan font-semibold tracking-wider uppercase text-sm">Платформа закрывает все потребности заинтересованного клиента</span>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 5: Product -->
-    <section id="section-5" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Продукт</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 100ms;">
-                    <div class="w-12 h-12 rounded-full bg-accent-blue/20 flex items-center justify-center mb-4 text-2xl">📱</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Мобильное приложение</h3>
-                    <p class="text-gray-400">iOS/Android с реал-тайм аналитикой</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 200ms;">
-                    <div class="w-12 h-12 rounded-full bg-accent-cyan/20 flex items-center justify-center mb-4 text-2xl">🤖</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Автоматизированная торговля</h3>
-                    <p class="text-gray-400">Торговля на фьючерсах</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 300ms;">
-                    <div class="w-12 h-12 rounded-full bg-accent-purple/20 flex items-center justify-center mb-4 text-2xl">💎</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Эксклюзивные инсайты</h3>
-                    <p class="text-gray-400">Приватная аналитика рынка</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 400ms;">
-                    <div class="w-12 h-12 rounded-full bg-accent-blue/20 flex items-center justify-center mb-4 text-2xl">🎓</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Образовательная программа</h3>
-                    <p class="text-gray-400">Полный курс по криптотрейдингу</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300 md:col-span-2 lg:col-span-2" style="transition-delay: 500ms;">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan flex items-center justify-center mb-4 text-2xl">👑</div>
-                    <h3 class="text-xl font-bold mb-2 text-white">Индивидуальный портфельный менеджер</h3>
-                    <p class="text-gray-400">Персональное сопровождение для VIP клиентов</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 5: Product -->
+   <section id="section-5" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Продукт</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 100ms;">
+                   <div class="icon-circle icon-gradient-blue mb-4">
+                       <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold mb-2 text-white">Мобильное приложение</h3>
+                   <p class="text-gray-400">iOS/Android с реал-тайм аналитикой</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 200ms;">
+                   <div class="icon-circle icon-gradient-cyan mb-4">
+                       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold mb-2 text-white">Автоматизированная торговля</h3>
+                   <p class="text-gray-400">Торговля на фьючерсах</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 300ms;">
+                   <div class="icon-circle icon-gradient-purple mb-4">
+                       <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold mb-2 text-white">Эксклюзивные инсайты</h3>
+                   <p class="text-gray-400">Приватная аналитика рынка</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 400ms;">
+                   <div class="icon-circle icon-gradient-blue mb-4">
+                       <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold mb-2 text-white">Образовательная программа</h3>
+                   <p class="text-gray-400">Полный курс по криптотрейдингу</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300 md:col-span-2 lg:col-span-2" style="transition-delay: 500ms;">
+                   <div class="icon-circle mb-4" style="background: linear-gradient(135deg, #64b5ff, #00f0ff); color: #000;">
+                       <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M12 11v4"/><path d="M12 15l-2-2"/><path d="M12 15l2-2"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold mb-2 text-white">Индивидуальный портфельный менеджер</h3>
+                   <p class="text-gray-400">Персональное сопровождение для VIP клиентов</p>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 6: Achievements -->
-    <section id="section-6" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Достижения</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="fade-in space-y-4" style="transition-delay: 200ms;">
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
-                        <div class="text-2xl">✅</div>
-                        <p class="text-lg text-gray-200">Приложение разработано и размещено</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
-                        <div class="text-2xl">✅</div>
-                        <p class="text-lg text-gray-200">Серверная инфраструктура развернута</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
-                        <div class="text-2xl">✅</div>
-                        <p class="text-lg text-gray-200">Подключены API бирж</p>
-                    </div>
-                </div>
-                
-                <div class="fade-in space-y-4" style="transition-delay: 400ms;">
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
-                        <div class="text-2xl">✅</div>
-                        <p class="text-lg text-gray-200">Алгоритм автоторговли запущен</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
-                        <div class="text-2xl">✅</div>
-                        <p class="text-lg text-gray-200">Переговоры с маркетинговыми компаниями завершены</p>
-                    </div>
-                    <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-accent-cyan bg-accent-cyan/5">
-                        <div class="text-2xl">🚀</div>
-                        <p class="text-lg text-gray-200">Получена база <span class="number-accent">80 000+</span> потенциальных пользователей</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 6: Achievements -->
+   <section id="section-6" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Достижения</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-2 gap-6">
+               <div class="fade-in space-y-4" style="transition-delay: 200ms;">
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
+                       <div class="check-icon">
+                           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Приложение разработано и размещено</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
+                       <div class="check-icon">
+                           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Серверная инфраструктура развернута</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
+                       <div class="check-icon">
+                           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Подключены API бирж</p>
+                   </div>
+               </div>
+               
+               <div class="fade-in space-y-4" style="transition-delay: 400ms;">
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
+                       <div class="check-icon">
+                           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Алгоритм автоторговли запущен</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-green-400">
+                       <div class="check-icon">
+                           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Переговоры с маркетинговыми компаниями завершены</p>
+                   </div>
+                   <div class="glass-card rounded-xl p-6 flex items-center gap-4 border-l-4 border-accent-cyan bg-accent-cyan/5">
+                       <div class="rocket-icon">
+                           <svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                       </div>
+                       <p class="text-lg text-gray-200">Получена база <span class="number-accent">80 000+</span> потенциальных пользователей</p>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 7: Business Model -->
-    <section id="section-7" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Бизнес-модель</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-gray-400" style="transition-delay: 100ms;">
-                    <h3 class="text-2xl font-bold text-gray-400 mb-2">Free</h3>
-                    <p class="text-gray-500">Базовый доступ</p>
-                </div>
-                <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-accent-blue transform scale-105 shadow-2xl shadow-accent-blue/20" style="transition-delay: 200ms;">
-                    <h3 class="text-3xl font-bold neon-text mb-2">Pro</h3>
-                    <p class="text-accent-cyan font-semibold">Основной тариф</p>
-                </div>
-                <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-accent-purple" style="transition-delay: 300ms;">
-                    <h3 class="text-2xl font-bold text-accent-purple mb-2">VIP</h3>
-                    <p class="text-gray-400">Премиум доступ</p>
-                </div>
-            </div>
-            
-            <div class="fade-in glass-card rounded-2xl p-8 gradient-border" style="transition-delay: 400ms;">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <p class="text-2xl mb-4">Средний чек: <span class="number-accent text-4xl">€29</span> / месяц</p>
-                        <p class="text-gray-400 text-lg">Основной доход — подписочная модель</p>
-                    </div>
-                    <div class="space-y-2 text-gray-300">
-                        <p>• Дополнительные доходы: консультации</p>
-                        <p>• Партнёрства</p>
-                        <p>• B2B-интеграции</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 7: Business Model -->
+   <section id="section-7" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Бизнес-модель</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-3 gap-6 mb-8">
+               <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-gray-400" style="transition-delay: 100ms;">
+                   <h3 class="text-2xl font-bold text-gray-400 mb-2">Free</h3>
+                   <p class="text-gray-500">Базовый доступ</p>
+               </div>
+               <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-accent-blue transform scale-105 shadow-2xl shadow-accent-blue/20" style="transition-delay: 200ms;">
+                   <h3 class="text-3xl font-bold neon-text mb-2">Pro</h3>
+                   <p class="text-accent-cyan font-semibold">Основной тариф</p>
+               </div>
+               <div class="fade-in glass-card rounded-2xl p-8 text-center border-t-4 border-accent-purple" style="transition-delay: 300ms;">
+                   <h3 class="text-2xl font-bold text-accent-purple mb-2">VIP</h3>
+                   <p class="text-gray-400">Премиум доступ</p>
+               </div>
+           </div>
+           
+           <div class="fade-in glass-card rounded-2xl p-8 gradient-border" style="transition-delay: 400ms;">
+               <div class="grid md:grid-cols-2 gap-8 items-center">
+                   <div>
+                       <p class="text-2xl mb-4">Средний чек: <span class="number-accent text-4xl">€29</span> / месяц</p>
+                       <p class="text-gray-400 text-lg">Основной доход — подписочная модель</p>
+                   </div>
+                   <div class="space-y-2 text-gray-300">
+                       <p>• Дополнительные доходы: консультации</p>
+                       <p>• Партнёрства</p>
+                       <p>• B2B-интеграции</p>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 8: Finances -->
-    <section id="section-8" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-5xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Финансы</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="fade-in grid md:grid-cols-2 gap-6" style="transition-delay: 200ms;">
-                <div class="glass-card rounded-2xl p-8">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-300">Комиссии и налоги</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
-                            <span class="text-gray-400">Apple Commission</span>
-                            <span class="text-red-400 font-bold text-xl">30%</span>
-                        </div>
-                        <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
-                            <span class="text-gray-400">Корпоративный налог ОАЭ</span>
-                            <span class="number-accent text-xl">9%</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="glass-card rounded-2xl p-8">
-                    <h3 class="text-xl font-semibold mb-4 text-gray-300">Расходы</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
-                            <span class="text-gray-400">Фиксированные (AI агрегаторы)</span>
-                            <span class="text-white font-bold text-xl">€800/мес</span>
-                        </div>
-                        <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
-                            <span class="text-gray-400">Переменные (CAC)</span>
-                            <span class="text-white font-bold text-xl">Трафик</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 8: Finances -->
+   <section id="section-8" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-5xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Финансы</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="fade-in grid md:grid-cols-2 gap-6" style="transition-delay: 200ms;">
+               <div class="glass-card rounded-2xl p-8">
+                   <h3 class="text-xl font-semibold mb-4 text-gray-300">Комиссии и налоги</h3>
+                   <div class="space-y-4">
+                       <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
+                           <span class="text-gray-400">Apple Commission</span>
+                           <span class="text-red-400 font-bold text-xl">30%</span>
+                       </div>
+                       <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
+                           <span class="text-gray-400">Корпоративный налог ОАЭ</span>
+                           <span class="number-accent text-xl">9%</span>
+                       </div>
+                   </div>
+               </div>
+               
+               <div class="glass-card rounded-2xl p-8">
+                   <h3 class="text-xl font-semibold mb-4 text-gray-300">Расходы</h3>
+                   <div class="space-y-4">
+                       <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
+                           <span class="text-gray-400">Фиксированные (AI агрегаторы)</span>
+                           <span class="text-white font-bold text-xl">€800/мес</span>
+                       </div>
+                       <div class="flex justify-between items-center p-4 rounded-lg bg-white/5">
+                           <span class="text-gray-400">Переменные (CAC)</span>
+                           <span class="text-white font-bold text-xl">Трафик</span>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 9: Unit Economics -->
-    <section id="section-9" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-7xl mx-auto w-full">
-            <div class="fade-in mb-8">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 neon-text">Юнит-экономика</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mb-4"></div>
-                <p class="text-xl text-gray-300">Точка безубыточности: <span class="number-accent">~40–50</span> платных пользователей</p>
-            </div>
-            
-            <div class="grid lg:grid-cols-3 gap-6 mb-8">
-                <!-- Scenario 1 -->
-                <div class="fade-in scenario-card glass-card rounded-2xl p-6" style="transition-delay: 100ms;">
-                    <h3 class="text-xl font-bold mb-4 text-accent-blue">Сценарий 1 — 1 000 пользователей</h3>
-                    <div class="space-y-2 text-sm text-gray-300 font-mono">
-                        <p>Валовая выручка: <span class="text-white">€29 000</span></p>
-                        <p>После Apple: <span class="text-white">€20 300</span></p>
-                        <p>Расходы: <span class="text-red-400">€3 800</span></p>
-                        <p>Прибыль до налога: <span class="text-white">€16 500</span></p>
-                        <p>Налог 9%: <span class="text-red-400">€1 485</span></p>
-                        <div class="pt-2 border-t border-white/10 mt-2">
-                            <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €15 015/мес</p>
-                            <p class="text-accent-cyan">Годовая: ≈ €180 000</p>
-                            <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €18 000/год</p>
-                        </div>
-                    </div>
-                    <div class="mt-4 p-3 rounded bg-green-500/10 border border-green-500/30">
-                        <p class="text-green-400 text-sm font-semibold">Окупаемость: ~12 месяцев</p>
-                    </div>
-                </div>
-                
-                <!-- Scenario 2 -->
-                <div class="fade-in scenario-card glass-card rounded-2xl p-6" style="transition-delay: 200ms;">
-                    <h3 class="text-xl font-bold mb-4 text-accent-cyan">Сценарий 2 — 5 000 пользователей</h3>
-                    <div class="space-y-2 text-sm text-gray-300 font-mono">
-                        <p>Валовая выручка: <span class="text-white">€145 000</span></p>
-                        <p>После Apple: <span class="text-white">€101 500</span></p>
-                        <p>Расходы: <span class="text-red-400">€12 800</span></p>
-                        <p>Прибыль до налога: <span class="text-white">€88 700</span></p>
-                        <p>Налог 9%: <span class="text-red-400">€7 983</span></p>
-                        <div class="pt-2 border-t border-white/10 mt-2">
-                            <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €80 717/мес</p>
-                            <p class="text-accent-cyan">Годовая: ≈ €968 000</p>
-                            <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €96 800/год</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Scenario 3 -->
-                <div class="fade-in scenario-card glass-card rounded-2xl p-6 border-accent-purple/50" style="transition-delay: 300ms;">
-                    <h3 class="text-xl font-bold mb-4 text-accent-purple">Сценарий 3 — 10 000 пользователей</h3>
-                    <div class="space-y-2 text-sm text-gray-300 font-mono">
-                        <p>Валовая выручка: <span class="text-white">€290 000</span></p>
-                        <p>После Apple: <span class="text-white">€203 000</span></p>
-                        <p>Расходы: <span class="text-red-400">€25 800</span></p>
-                        <p>Прибыль до налога: <span class="text-white">€177 200</span></p>
-                        <p>Налог 9%: <span class="text-red-400">€15 948</span></p>
-                        <div class="pt-2 border-t border-white/10 mt-2">
-                            <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €161 252/мес</p>
-                            <p class="text-accent-cyan">Годовая: ≈ €1.93 млн</p>
-                            <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €193 000/год</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="fade-in glass-card rounded-xl p-6 border-l-4 border-yellow-500 bg-yellow-500/5" style="transition-delay: 400ms;">
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    <span class="text-yellow-500 font-bold">Важная интеллектуальная честность:</span> Эта модель предполагает стабильный retention, отсутствие возвратов, контроль CAC и отсутствие юридических ограничений по автоторговле. Это рабочая финансовая теория. Реальность всегда чуть грязнее.
-                </p>
-            </div>
-        </div>
-    </section>
+   <!-- Section 9: Unit Economics -->
+   <section id="section-9" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-7xl mx-auto w-full">
+           <div class="fade-in mb-8">
+               <h2 class="text-4xl md:text-5xl font-bold mb-4 neon-text">Юнит-экономика</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mb-4"></div>
+               <p class="text-xl text-gray-300">Точка безубыточности: <span class="number-accent">~40–50</span> платных пользователей</p>
+           </div>
+           
+           <div class="grid lg:grid-cols-3 gap-6 mb-8">
+               <!-- Scenario 1 -->
+               <div class="fade-in scenario-card glass-card rounded-2xl p-6" style="transition-delay: 100ms;">
+                   <h3 class="text-xl font-bold mb-4 text-accent-blue">Сценарий 1 — 1 000 пользователей</h3>
+                   <div class="space-y-2 text-sm text-gray-300 font-mono">
+                       <p>Валовая выручка: <span class="text-white">€29 000</span></p>
+                       <p>После Apple: <span class="text-white">€20 300</span></p>
+                       <p>Расходы: <span class="text-red-400">€3 800</span></p>
+                       <p>Прибыль до налога: <span class="text-white">€16 500</span></p>
+                       <p>Налог 9%: <span class="text-red-400">€1 485</span></p>
+                       <div class="pt-2 border-t border-white/10 mt-2">
+                           <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €15 015/мес</p>
+                           <p class="text-accent-cyan">Годовая: ≈ €180 000</p>
+                           <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €18 000/год</p>
+                       </div>
+                   </div>
+                   <div class="mt-4 p-3 rounded bg-green-500/10 border border-green-500/30">
+                       <p class="text-green-400 text-sm font-semibold">Окупаемость: ~12 месяцев</p>
+                   </div>
+               </div>
+               
+               <!-- Scenario 2 -->
+               <div class="fade-in scenario-card glass-card rounded-2xl p-6" style="transition-delay: 200ms;">
+                   <h3 class="text-xl font-bold mb-4 text-accent-cyan">Сценарий 2 — 5 000 пользователей</h3>
+                   <div class="space-y-2 text-sm text-gray-300 font-mono">
+                       <p>Валовая выручка: <span class="text-white">€145 000</span></p>
+                       <p>После Apple: <span class="text-white">€101 500</span></p>
+                       <p>Расходы: <span class="text-red-400">€12 800</span></p>
+                       <p>Прибыль до налога: <span class="text-white">€88 700</span></p>
+                       <p>Налог 9%: <span class="text-red-400">€7 983</span></p>
+                       <div class="pt-2 border-t border-white/10 mt-2">
+                           <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €80 717/мес</p>
+                           <p class="text-accent-cyan">Годовая: ≈ €968 000</p>
+                           <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €96 800/год</p>
+                       </div>
+                   </div>
+               </div>
+               
+               <!-- Scenario 3 -->
+               <div class="fade-in scenario-card glass-card rounded-2xl p-6 border-accent-purple/50" style="transition-delay: 300ms;">
+                   <h3 class="text-xl font-bold mb-4 text-accent-purple">Сценарий 3 — 10 000 пользователей</h3>
+                   <div class="space-y-2 text-sm text-gray-300 font-mono">
+                       <p>Валовая выручка: <span class="text-white">€290 000</span></p>
+                       <p>После Apple: <span class="text-white">€203 000</span></p>
+                       <p>Расходы: <span class="text-red-400">€25 800</span></p>
+                       <p>Прибыль до налога: <span class="text-white">€177 200</span></p>
+                       <p>Налог 9%: <span class="text-red-400">€15 948</span></p>
+                       <div class="pt-2 border-t border-white/10 mt-2">
+                           <p class="text-accent-cyan font-bold">Чистая прибыль: ≈ €161 252/мес</p>
+                           <p class="text-accent-cyan">Годовая: ≈ €1.93 млн</p>
+                           <p class="text-accent-purple font-bold mt-2">10% инвестора: ≈ €193 000/год</p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="fade-in glass-card rounded-xl p-6 border-l-4 border-yellow-500 bg-yellow-500/5" style="transition-delay: 400ms;">
+               <p class="text-gray-400 text-sm leading-relaxed">
+                   <span class="text-yellow-500 font-bold">Важная интеллектуальная честность:</span> Эта модель предполагает стабильный retention, отсутствие возвратов, контроль CAC и отсутствие юридических ограничений по автоторговле. Это рабочая финансовая теория. Реальность всегда чуть грязнее.
+               </p>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 10: Scale -->
-    <section id="section-10" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Масштаб</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 100ms;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="text-3xl">🌍</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">СНГ и Европа</h3>
-                            <p class="text-accent-cyan font-semibold">2026</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400">Фокус на русскоязычную аудиторию и ЕС, ожидаемый рост на <span class="number-accent">200–300%</span></p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 200ms;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="text-3xl">🌎</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Латинская Америка</h3>
-                            <p class="text-accent-cyan font-semibold">2027</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400">Бразилия, Мексика, Аргентина — потенциал <span class="number-accent">+500k</span> пользователей</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 300ms;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="text-3xl">🌏</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Азия</h3>
-                            <p class="text-accent-cyan font-semibold">2028</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400">Индия, Индонезия, Вьетнам — прогноз роста до <span class="number-accent">2 млн</span> пользователей</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 400ms;">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="text-3xl">🌐</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-white">Глобальный</h3>
-                            <p class="text-accent-cyan font-semibold">Долгосрочно</p>
-                        </div>
-                    </div>
-                    <p class="text-gray-400">Локализация на <span class="number-accent">5+ языков</span>, партнёрства с биржами</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 10: Scale -->
+   <section id="section-10" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Масштаб</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-2 gap-6">
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 100ms;">
+                   <div class="flex items-center gap-4 mb-4">
+                       <div class="icon-circle icon-gradient-blue">
+                           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                       </div>
+                       <div>
+                           <h3 class="text-xl font-bold text-white">СНГ и Европа</h3>
+                           <p class="text-accent-cyan font-semibold">2026</p>
+                       </div>
+                   </div>
+                   <p class="text-gray-400">Фокус на русскоязычную аудиторию и ЕС, ожидаемый рост на <span class="number-accent">200–300%</span></p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 200ms;">
+                   <div class="flex items-center gap-4 mb-4">
+                       <div class="icon-circle icon-gradient-green">
+                           <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                       </div>
+                       <div>
+                           <h3 class="text-xl font-bold text-white">Латинская Америка</h3>
+                           <p class="text-accent-cyan font-semibold">2027</p>
+                       </div>
+                   </div>
+                   <p class="text-gray-400">Бразилия, Мексика, Аргентина — потенциал <span class="number-accent">+500k</span> пользователей</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 300ms;">
+                   <div class="flex items-center gap-4 mb-4">
+                       <div class="icon-circle icon-gradient-purple">
+                           <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></svg>
+                       </div>
+                       <div>
+                           <h3 class="text-xl font-bold text-white">Азия</h3>
+                           <p class="text-accent-cyan font-semibold">2028</p>
+                       </div>
+                   </div>
+                   <p class="text-gray-400">Индия, Индонезия, Вьетнам — прогноз роста до <span class="number-accent">2 млн</span> пользователей</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-transform" style="transition-delay: 400ms;">
+                   <div class="flex items-center gap-4 mb-4">
+                       <div class="icon-circle icon-gradient-cyan">
+                           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                       </div>
+                       <div>
+                           <h3 class="text-xl font-bold text-white">Глобальный</h3>
+                           <p class="text-accent-cyan font-semibold">Долгосрочно</p>
+                       </div>
+                   </div>
+                   <p class="text-gray-400">Локализация на <span class="number-accent">5+ языков</span>, партнёрства с биржами</p>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 11: Investments -->
-    <section id="section-11" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-5xl mx-auto w-full">
-            <div class="fade-in mb-12 text-center">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Необходимые инвестиции</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
-            </div>
-            
-            <div class="fade-in grid md:grid-cols-2 gap-4 mb-12" style="transition-delay: 200ms;">
-                <div class="glass-card rounded-xl p-6 flex justify-between items-center">
-                    <span class="text-gray-300">Доработка приложения</span>
-                    <span class="text-xl font-bold text-white">€2 200</span>
-                </div>
-                <div class="glass-card rounded-xl p-6 flex justify-between items-center">
-                    <span class="text-gray-300">Контент-платформа</span>
-                    <span class="text-xl font-bold text-white">€2 400</span>
-                </div>
-                <div class="glass-card rounded-xl p-6 flex justify-between items-center">
-                    <span class="text-gray-300">Регистрация компании</span>
-                    <span class="text-xl font-bold text-white">€3 250</span>
-                </div>
-                <div class="glass-card rounded-xl p-6 flex justify-between items-center">
-                    <span class="text-gray-300">Маркетинг и автоматизация</span>
-                    <span class="text-xl font-bold text-white">€5 400</span>
-                </div>
-                <div class="glass-card rounded-xl p-6 flex justify-between items-center md:col-span-2">
-                    <span class="text-gray-300">Оборудование</span>
-                    <span class="text-xl font-bold text-white">€3 500</span>
-                </div>
-            </div>
-            
-            <div class="fade-in text-center" style="transition-delay: 400ms;">
-                <div class="inline-block glass-card rounded-3xl p-8 md:p-12 gradient-border">
-                    <p class="text-gray-400 mb-4 text-lg uppercase tracking-widest">Итого инвестиций</p>
-                    <div class="total-investment mb-4">€18 000</div>
-                    <p class="text-accent-cyan text-xl font-semibold">за 10% доли в компании</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 11: Investments -->
+   <section id="section-11" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-5xl mx-auto w-full">
+           <div class="fade-in mb-12 text-center">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Необходимые инвестиции</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
+           </div>
+           
+           <div class="fade-in grid md:grid-cols-2 gap-4 mb-12" style="transition-delay: 200ms;">
+               <div class="glass-card rounded-xl p-6 flex justify-between items-center">
+                   <span class="text-gray-300">Доработка приложения</span>
+                   <span class="text-xl font-bold text-white">€2 200</span>
+               </div>
+               <div class="glass-card rounded-xl p-6 flex justify-between items-center">
+                   <span class="text-gray-300">Контент-платформа</span>
+                   <span class="text-xl font-bold text-white">€2 400</span>
+               </div>
+               <div class="glass-card rounded-xl p-6 flex justify-between items-center">
+                   <span class="text-gray-300">Регистрация компании</span>
+                   <span class="text-xl font-bold text-white">€3 250</span>
+               </div>
+               <div class="glass-card rounded-xl p-6 flex justify-between items-center">
+                   <span class="text-gray-300">Маркетинг и автоматизация</span>
+                   <span class="text-xl font-bold text-white">€5 400</span>
+               </div>
+               <div class="glass-card rounded-xl p-6 flex justify-between items-center md:col-span-2">
+                   <span class="text-gray-300">Оборудование</span>
+                   <span class="text-xl font-bold text-white">€3 500</span>
+               </div>
+           </div>
+           
+           <div class="fade-in text-center" style="transition-delay: 400ms;">
+               <div class="inline-block glass-card rounded-3xl p-8 md:p-12 gradient-border">
+                   <p class="text-gray-400 mb-4 text-lg uppercase tracking-widest">Итого инвестиций</p>
+                   <div class="total-investment mb-4">€18 000</div>
+                   <p class="text-accent-cyan text-xl font-semibold">за 10% доли в компании</p>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 12: Exit Strategy -->
-    <section id="section-12" class="relative">
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-5xl mx-auto w-full">
-            <div class="fade-in mb-12">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Exit-стратегия</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 100ms;">
-                    <div class="text-4xl mb-4">🏢</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Продажа стратегическому игроку</h3>
-                    <p class="text-gray-400">Приобретение крупной финтех-компанией</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 200ms;">
-                    <div class="text-4xl mb-4">🔄</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Интеграция в экосистему</h3>
-                    <p class="text-gray-400">Вход в состав крупной финтех-платформы</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 300ms;">
-                    <div class="text-4xl mb-4">💰</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Выкуп доли</h3>
-                    <p class="text-gray-400">Обратный выкуп фаундером или новым инвестором</p>
-                </div>
-                
-                <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 400ms;">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h3 class="text-xl font-bold text-white mb-2">Дивидендная модель</h3>
-                    <p class="text-gray-400">Регулярные выплаты прибыли инвесторам</p>
-                </div>
-            </div>
-        </div>
-    </section>
+   <!-- Section 12: Exit Strategy -->
+   <section id="section-12" class="relative">
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-5xl mx-auto w-full">
+           <div class="fade-in mb-12">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Exit-стратегия</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full"></div>
+           </div>
+           
+           <div class="grid md:grid-cols-2 gap-6">
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 100ms;">
+                   <div class="icon-circle icon-gradient-blue mb-4">
+                       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold text-white mb-2">Продажа стратегическому игроку</h3>
+                   <p class="text-gray-400">Приобретение крупной финтех-компанией</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 200ms;">
+                   <div class="icon-circle icon-gradient-cyan mb-4">
+                       <svg viewBox="0 0 24 24"><path d="M16 3h3v3h-3zM8 3h3v3H8zM5 8h14v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8zM12 12v4"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold text-white mb-2">Интеграция в экосистему</h3>
+                   <p class="text-gray-400">Вход в состав крупной финтех-платформы</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 300ms;">
+                   <div class="icon-circle icon-gradient-purple mb-4">
+                       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h6"/><path d="M12 12h.01"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold text-white mb-2">Выкуп доли</h3>
+                   <p class="text-gray-400">Обратный выкуп фаундером или новым инвестором</p>
+               </div>
+               
+               <div class="fade-in glass-card rounded-2xl p-8 hover:scale-105 transition-all duration-300" style="transition-delay: 400ms;">
+                   <div class="icon-circle icon-gradient-green mb-4">
+                       <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                   </div>
+                   <h3 class="text-xl font-bold text-white mb-2">Дивидендная модель</h3>
+                   <p class="text-gray-400">Регулярные выплаты прибыли инвесторам</p>
+               </div>
+           </div>
+       </div>
+   </section>
 
-    <!-- Section 13: Summary -->
-    <section id="section-13" class="relative">
-        <div class="hero-bg"></div>
-        <div class="grid-pattern"></div>
-        <div class="relative z-10 max-w-6xl mx-auto w-full">
-            <div class="fade-in mb-12 text-center">
-                <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Итог</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
-            </div>
-            
-            <div class="fade-in glass-card rounded-3xl p-8 md:p-12 gradient-border mb-8" style="transition-delay: 200ms;">
-                <p class="text-xl md:text-2xl leading-relaxed text-center mb-8 text-gray-200">
-                    <span class="font-bold neon-text">CRYPTO NOVΛ</span> — готовая платформа для системной прибыли в крипте с минимальными рисками и высоким upside.
-                </p>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="highlight-box rounded-xl p-6">
-                        <div class="text-accent-cyan text-2xl mb-2">✓</div>
-                        <p class="text-gray-200">Готовый продукт и база <span class="number-accent">80 000+</span> пользователей</p>
-                    </div>
-                    <div class="highlight-box rounded-xl p-6">
-                        <div class="text-accent-cyan text-2xl mb-2">✓</div>
-                        <p class="text-gray-200">Маржинальность <span class="number-accent">>80%</span>, окупаемость за <span class="number-accent">12</span> месяцев</p>
-                    </div>
-                    <div class="highlight-box rounded-xl p-6">
-                        <div class="text-accent-cyan text-2xl mb-2">✓</div>
-                        <p class="text-gray-200">Потенциал: от <span class="number-accent">€180k</span> до <span class="number-accent">€1.93 млн</span> в год</p>
-                    </div>
-                    <div class="highlight-box rounded-xl p-6">
-                        <div class="text-accent-cyan text-2xl mb-2">✓</div>
-                        <p class="text-gray-200">Глобальная экспансия: СНГ, Европа, ЛатАм, Азия</p>
-                    </div>
-                    <div class="highlight-box rounded-xl p-6 md:col-span-2 lg:col-span-2">
-                        <div class="text-accent-cyan text-2xl mb-2">✓</div>
-                        <p class="text-gray-200">Инвестиции <span class="number-accent">€18 000</span> за <span class="number-accent">10%</span> доли с ROI <span class="number-accent">20–50×</span></p>
-                    </div>
-                </div>
-            </div>
-            
-                <button class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan text-black font-bold text-lg hover:scale-105 transition-transform shadow-2xl shadow-accent-blue/50">
-                    Присоидиняйся!
-                </button>
-            </div>
-        </div>
-    </section>
+   <!-- Section 13: Summary -->
+   <section id="section-13" class="relative">
+       <div class="hero-bg"></div>
+       <div class="grid-pattern"></div>
+       <div class="relative z-10 max-w-6xl mx-auto w-full">
+           <div class="fade-in mb-12 text-center">
+               <h2 class="text-4xl md:text-6xl font-bold mb-4 neon-text">Итог</h2>
+               <div class="w-24 h-1 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full mx-auto"></div>
+           </div>
+           
+           <div class="fade-in glass-card rounded-3xl p-8 md:p-12 gradient-border mb-8" style="transition-delay: 200ms;">
+               <p class="text-xl md:text-2xl leading-relaxed text-center mb-8 text-gray-200">
+                   <span class="font-bold neon-text">CRYPTO NOVΛ</span> — готовая платформа для системной прибыли в крипте с минимальными рисками и высоким upside.
+               </p>
+               
+               <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                   <div class="highlight-box rounded-xl p-6">
+                       <div class="text-accent-cyan text-2xl mb-2">
+                           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-gray-200">Готовый продукт и база <span class="number-accent">80 000+</span> пользователей</p>
+                   </div>
+                   <div class="highlight-box rounded-xl p-6">
+                       <div class="text-accent-cyan text-2xl mb-2">
+                           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-gray-200">Маржинальность <span class="number-accent">>80%</span>, окупаемость за <span class="number-accent">12</span> месяцев</p>
+                   </div>
+                   <div class="highlight-box rounded-xl p-6">
+                       <div class="text-accent-cyan text-2xl mb-2">
+                           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-gray-200">Потенциал: от <span class="number-accent">€180k</span> до <span class="number-accent">€1.93 млн</span> в год</p>
+                   </div>
+                   <div class="highlight-box rounded-xl p-6">
+                       <div class="text-accent-cyan text-2xl mb-2">
+                           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-gray-200">Глобальная экспансия: СНГ, Европа, ЛатАм, Азия</p>
+                   </div>
+                   <div class="highlight-box rounded-xl p-6 md:col-span-2 lg:col-span-2">
+                       <div class="text-accent-cyan text-2xl mb-2">
+                           <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                       </div>
+                       <p class="text-gray-200">Инвестиции <span class="number-accent">€18 000</span> за <span class="number-accent">10%</span> доли с ROI <span class="number-accent">20–50×</span></p>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="fade-in text-center" style="transition-delay: 400ms;">
+               <p class="text-2xl md:text-3xl font-light text-gray-300 mb-8">Присоединяйтесь к созданию будущего крипто-трейдинга</p>
+               <button class="px-8 py-4 rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan text-black font-bold text-lg hover:scale-105 transition-transform shadow-2xl shadow-accent-blue/50">
+                   Связаться с нами
+               </button>
+           </div>
+       </div>
+   </section>
 
-    <!-- Footer -->
-    <footer class="fixed bottom-0 left-0 right-0 py-4 px-6 text-center text-gray-500 text-sm z-50 pointer-events-none bg-gradient-to-t from-black/80 to-transparent">
-        <p>CRYPTO NOVΛ · Февраль 2026</p>
-    </footer>
+   <!-- Footer -->
+   <footer class="fixed bottom-0 left-0 right-0 py-4 px-6 text-center text-gray-500 text-sm z-50 pointer-events-none bg-gradient-to-t from-black/80 to-transparent">
+       <p>CRYPTO NOVΛ · Февраль 2026</p>
+   </footer>
 
-    <script>
-        // Generate starfield
-        const starfield = document.getElementById('starfield');
-        const starCount = 100;
-        
-        for (let i = 0; i < starCount; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
-            star.style.setProperty('--delay', Math.random() * 5 + 's');
-            star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
-            starfield.appendChild(star);
-        }
-        
-        // Generate navigation dots
-        const sections = document.querySelectorAll('section');
-        const navDotsContainer = document.getElementById('navDots');
-        const totalSections = sections.length;
-        
-        sections.forEach((section, index) => {
-            const dot = document.createElement('div');
-            dot.className = 'nav-dot';
-            dot.addEventListener('click', () => {
-                section.scrollIntoView({ behavior: 'smooth' });
-            });
-            navDotsContainer.appendChild(dot);
-        });
-        
-        const dots = document.querySelectorAll('.nav-dot');
-        
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Scroll handling for progress bar and active dot
-        function updateScrollIndicators() {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrollTop / docHeight) * 100;
-            
-            document.getElementById('progressBar').style.width = scrollPercent + '%';
-            
-            // Update active dot
-            let currentSection = 0;
-            sections.forEach((section, index) => {
-                const rect = section.getBoundingClientRect();
-                if (rect.top <= window.innerHeight / 2) {
-                    currentSection = index;
-                }
-            });
-            
-            dots.forEach((dot, index) => {
-                if (index === currentSection) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-        
-        window.addEventListener('scroll', updateScrollIndicators);
-        updateScrollIndicators();
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                const current = Array.from(sections).findIndex(s => {
-                    const rect = s.getBoundingClientRect();
-                    return rect.top >= -10 && rect.top <= 10;
-                });
-                if (current < sections.length - 1) {
-                    sections[current + 1].scrollIntoView({ behavior: 'smooth' });
-                }
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                const current = Array.from(sections).findIndex(s => {
-                    const rect = s.getBoundingClientRect();
-                    return rect.top >= -10 && rect.top <= 10;
-                });
-                if (current > 0) {
-                    sections[current - 1].scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-        
-        // Touch handling for mobile swipe
-        let touchStartY = 0;
-        let touchEndY = 0;
-        
-        document.addEventListener('touchstart', (e) => {
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-        
-        document.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        }, { passive: true });
-        
-        function handleSwipe() {
-            const threshold = 50;
-            const diff = touchStartY - touchEndY;
-            
-            if (Math.abs(diff) > threshold) {
-                const current = Array.from(sections).findIndex(s => {
-                    const rect = s.getBoundingClientRect();
-                    return rect.top >= -window.innerHeight/2 && rect.top <= window.innerHeight/2;
-                });
-                
-                if (diff > 0 && current < sections.length - 1) {
-                    // Swipe up - go down
-                    sections[current + 1].scrollIntoView({ behavior: 'smooth' });
-                } else if (diff < 0 && current > 0) {
-                    // Swipe down - go up
-                    sections[current - 1].scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        }
-    </script>
+   <script>
+       // Generate starfield
+       const starfield = document.getElementById('starfield');
+       const starCount = 100;
+       
+       for (let i = 0; i < starCount; i++) {
+           const star = document.createElement('div');
+           star.className = 'star';
+           star.style.left = Math.random() * 100 + '%';
+           star.style.top = Math.random() * 100 + '%';
+           star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+           star.style.setProperty('--delay', Math.random() * 5 + 's');
+           star.style.setProperty('--opacity', Math.random() * 0.7 + 0.3);
+           starfield.appendChild(star);
+       }
+       
+       // Generate navigation dots
+       const sections = document.querySelectorAll('section');
+       const navDotsContainer = document.getElementById('navDots');
+       const totalSections = sections.length;
+       
+       sections.forEach((section, index) => {
+           const dot = document.createElement('div');
+           dot.className = 'nav-dot';
+           dot.addEventListener('click', () => {
+               section.scrollIntoView({ behavior: 'smooth' });
+           });
+           navDotsContainer.appendChild(dot);
+       });
+       
+       const dots = document.querySelectorAll('.nav-dot');
+       
+       // Intersection Observer for fade-in animations
+       const observerOptions = {
+           threshold: 0.1,
+           rootMargin: '0px 0px -50px 0px'
+       };
+       
+       const observer = new IntersectionObserver((entries) => {
+           entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                   entry.target.classList.add('visible');
+               }
+           });
+       }, observerOptions);
+       
+       document.querySelectorAll('.fade-in').forEach(el => {
+           observer.observe(el);
+       });
+       
+       // Scroll handling for progress bar and active dot
+       function updateScrollIndicators() {
+           const scrollTop = window.scrollY;
+           const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+           const scrollPercent = (scrollTop / docHeight) * 100;
+           
+           document.getElementById('progressBar').style.width = scrollPercent + '%';
+           
+           // Update active dot
+           let currentSection = 0;
+           sections.forEach((section, index) => {
+               const rect = section.getBoundingClientRect();
+               if (rect.top <= window.innerHeight / 2) {
+                   currentSection = index;
+               }
+           });
+           
+           dots.forEach((dot, index) => {
+               if (index === currentSection) {
+                   dot.classList.add('active');
+               } else {
+                   dot.classList.remove('active');
+               }
+           });
+       }
+       
+       window.addEventListener('scroll', updateScrollIndicators);
+       updateScrollIndicators();
+       
+       // Keyboard navigation
+       document.addEventListener('keydown', (e) => {
+           if (e.key === 'ArrowDown') {
+               e.preventDefault();
+               const current = Array.from(sections).findIndex(s => {
+                   const rect = s.getBoundingClientRect();
+                   return rect.top >= -10 && rect.top <= 10;
+               });
+               if (current < sections.length - 1) {
+                   sections[current + 1].scrollIntoView({ behavior: 'smooth' });
+               }
+           } else if (e.key === 'ArrowUp') {
+               e.preventDefault();
+               const current = Array.from(sections).findIndex(s => {
+                   const rect = s.getBoundingClientRect();
+                   return rect.top >= -10 && rect.top <= 10;
+               });
+               if (current > 0) {
+                   sections[current - 1].scrollIntoView({ behavior: 'smooth' });
+               }
+           }
+       });
+       
+       // Touch handling for mobile swipe
+       let touchStartY = 0;
+       let touchEndY = 0;
+       
+       document.addEventListener('touchstart', (e) => {
+           touchStartY = e.changedTouches[0].screenY;
+       }, { passive: true });
+       
+       document.addEventListener('touchend', (e) => {
+           touchEndY = e.changedTouches[0].screenY;
+           handleSwipe();
+       }, { passive: true });
+       
+       function handleSwipe() {
+           const threshold = 50;
+           const diff = touchStartY - touchEndY;
+           
+           if (Math.abs(diff) > threshold) {
+               const current = Array.from(sections).findIndex(s => {
+                   const rect = s.getBoundingClientRect();
+                   return rect.top >= -window.innerHeight/2 && rect.top <= window.innerHeight/2;
+               });
+               
+               if (diff > 0 && current < sections.length - 1) {
+                   // Swipe up - go down
+                   sections[current + 1].scrollIntoView({ behavior: 'smooth' });
+               } else if (diff < 0 && current > 0) {
+                   // Swipe down - go up
+                   sections[current - 1].scrollIntoView({ behavior: 'smooth' });
+               }
+           }
+       }
+   </script>
 </body>
 </html>
